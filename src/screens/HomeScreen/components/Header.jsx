@@ -23,10 +23,20 @@ const Header = () => {
           <View style={styles.profileStyle}>
             <Image source={{ uri: user?.imageUrl }} style={styles.userImage} />
             <View>
-              <Text style={{ color: Colors.WHITE, fontSize: 16 }}>
+              <Text
+                style={{
+                  color: Colors.WHITE,
+                  fontSize: 16,
+                }}
+              >
                 Welcome,
               </Text>
-              <Text style={{ color: Colors.WHITE, fontSize: 16 }}>
+              <Text
+                style={{
+                  color: Colors.WHITE,
+                  fontSize: 16,
+                }}
+              >
                 {user?.fullName}
               </Text>
             </View>
