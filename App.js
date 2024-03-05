@@ -25,10 +25,7 @@ const tokenCache = {
 
 export default function App() {
   return (
-    <ClerkProvider
-      tokenCache={tokenCache}
-      publishableKey=""
-    >
+    <ClerkProvider tokenCache={tokenCache} publishableKey="">
       <View style={styles.container}>
         <SignedIn>
           <NavigationContainer>

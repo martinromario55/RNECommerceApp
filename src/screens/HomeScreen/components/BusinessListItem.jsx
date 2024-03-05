@@ -9,7 +9,7 @@ const BusinessListItem = ({ business }) => {
       <View style={styles.content}>
         <Text style={styles.title}>{business?.title}</Text>
         <Text style={styles.contact}>{business?.contactPerson}</Text>
-        <Text style={styles.category}>{business?.category.name}</Text>
+        <Text style={styles.category}>{business?.category?.name}</Text>
       </View>
     </View>
   )

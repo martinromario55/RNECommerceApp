@@ -1,7 +1,6 @@
 import { request, gql } from 'graphql-request'
 
-const MAIN_URL =
-  'https://api-ap-south-1.hygraph.com/v2//master'
+const MAIN_URL = 'https://api-ap-south-1.hygraph.com/v2//master'
 
 const getSlider = async () => {
   const document = gql`
@@ -84,9 +83,85 @@ const getBusinessListByCategory = async category => {
   return result
 }
 
+const createBooking = async data => {
+  try {
+    const mutationQuery =
+      gql`
+    mutation createBooking {
+      createBooking(
+        data: {
+          bookingStatus: Booked
+          business: { connect: { id: "` +
+      data.businessId +
+      `" } }
+          date: "` +
+      data.date +
+      `"
+          time: "` +
+      data.time +
+      `"
+          userEmail: "` +
+      data.userEmail +
+      `"
+          userName: "` +
+      data.userName +
+      `"
+        }
+      ) {
+        id
+      }
+        publishManyBookings(to: PUBLISHED) {
+        count
+      }
+    }
+  `
+    const result = await request(MAIN_URL, mutationQuery)
+    return result
+  } catch (error) {
+    console.log('Something Went wrong', error)
+  }
+}
+
+const getUserBookings = async userEmail => {
+  try {
+    const query =
+      gql`
+      query GetUserBookings {
+        bookings(orderBy: updatedAt_DESC, where: { userEmail: "` +
+      userEmail +
+      `" }) {
+          time
+          userEmail
+          userName
+          bookingStatus
+          date
+          id
+          business {
+            id
+            images {
+              url
+            }
+            title
+            address
+            contactPerson
+            email
+            about
+          }
+        }
+      }
+    `
+    const result = await request(MAIN_URL, query)
+    return result
+  } catch (error) {
+    console.error('Something went wrong', error)
+  }
+}
+
 export default {
   getSlider,
   getCategories,
   getBusinessList,
   getBusinessListByCategory,
+  createBooking,
+  getUserBookings,
 }

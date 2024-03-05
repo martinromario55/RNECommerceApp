@@ -3,8 +3,9 @@ import React from 'react'
 import Colors from '../../Utils/Colors'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { FontAwesome } from '@expo/vector-icons'
 
-const CategoryListItem = ({ business }) => {
+const CategoryListItem = ({ business, booking }) => {
   const navigation = useNavigation()
   return (
     <TouchableOpacity
@@ -15,10 +16,33 @@ const CategoryListItem = ({ business }) => {
       <View style={styles.content}>
         <Text style={styles.contact}>{business?.contactPerson}</Text>
         <Text style={styles.title}>{business?.title}</Text>
-        <Text style={styles.address}>
-          <Ionicons name="location-sharp" size={20} color={Colors.PRIMARY} />
-          {business?.address}
-        </Text>
+        {booking?.id ? (
+          <View>
+            <Text
+              style={[
+                styles.bookingText,
+                booking?.bookingStatus == 'InProgress'
+                  ? { backgroundColor: Colors.LIGHT_GRAY }
+                  : booking?.bookingStatus == 'Completed'
+                  ? { backgroundColor: Colors.LIGHT_GREEN }
+                  : booking?.bookingStatus == 'Canceled'
+                  ? { backgroundColor: Colors.RED, color: 'red' }
+                  : {},
+              ]}
+            >
+              {booking?.bookingStatus}
+            </Text>
+            <Text style={[styles.bookingDateTime]}>
+              <FontAwesome name="calendar" size={24} color={Colors.PRIMARY} />{' '}
+              {booking?.date} at {booking?.time}
+            </Text>
+          </View>
+        ) : (
+          <Text style={styles.address}>
+            <Ionicons name="location-sharp" size={20} color={Colors.PRIMARY} />
+            {business?.address}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   )
@@ -55,5 +79,20 @@ const styles = StyleSheet.create({
   address: {
     fontSize: 19,
     color: 'grey',
+  },
+  bookingText: {
+    fontSize: 14,
+    color: Colors.PRIMARY,
+    fontWeight: '500',
+    backgroundColor: Colors.PRIMARY_LIGHT,
+    alignSelf: 'flex-start',
+    borderRadius: 5,
+    padding: 7,
+  },
+  bookingDateTime: {
+    fontSize: 14,
+    color: Colors.LIGHT_GRAY,
+    fontWeight: '500',
+    marginTop: 10,
   },
 })

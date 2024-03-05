@@ -1,5 +1,6 @@
 import {
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,13 +11,15 @@ import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import Colors from '../../Utils/Colors'
 import Heading from '../../components/Heading'
+import BookingModal from './BookingModal'
 
 const BusinessDetailsScreen = ({ navigation, route }) => {
   //   console.log('route:', route.params)
   const params = route.params
   const [business, setBusiness] = useState(params.business)
+  const [showModal, setShowModal] = useState(false)
 
-  //   console.log('params', params.business)
+  // console.log('params', params.business)
   return (
     <View>
       {business ? (
@@ -41,7 +44,7 @@ const BusinessDetailsScreen = ({ navigation, route }) => {
             </Text>
             <View style={styles.subContainer}>
               <Text style={styles.contact}>{business?.contactPerson}</Text>
-              <Text style={styles.category}>{business?.category.name}</Text>
+              <Text style={styles.category}>{business?.category?.name}</Text>
             </View>
             <Text style={styles.address}>
               <Ionicons
@@ -67,10 +70,19 @@ const BusinessDetailsScreen = ({ navigation, route }) => {
             <TouchableOpacity style={styles.messageBtn}>
               <Text style={styles.messageTextBtn}>Message</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.bookingBtn}>
+            <TouchableOpacity
+              style={styles.bookingBtn}
+              onPress={() => setShowModal(true)}
+            >
               <Text style={styles.bookingTextBtn}>Book Now</Text>
             </TouchableOpacity>
           </View>
+          <Modal animationType="slide" visible={showModal}>
+            <BookingModal
+              hideModal={() => setShowModal(false)}
+              businessId={business.id}
+            />
+          </Modal>
         </ScrollView>
       ) : (
         <View style={styles.about}>
